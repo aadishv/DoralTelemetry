@@ -1,0 +1,15 @@
+# VEX Telemetry Suite
+
+A modular system for advanced debugging, live telemetry, and autonomous tuning for VEX V5 robots. This project integrates a PROS-based control system with a Raspberry Pi for Bluetooth communication, camera-based vision tracking, and real-time data analysis.
+
+# 🧠 Core Features
+
+   - Real-time telemetry from the VEX brain via RS485 to Raspberry Pi
+
+   - Bluetooth communication from Pi to laptop (no Wi-Fi required)
+
+   - Camera-based motion tracking using a high-FPS GoPro stream
+
+  -  Autonomous tuning assistant to auto-adjust PID constants (e.g., KP, KI)
+
+ -   Modular Git repo with split branches for VEX, Pi, and PC code
