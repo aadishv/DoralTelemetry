@@ -1,20 +1,55 @@
 #include "main.h"
-#include "cmath"
+#include "cJSON.h"
 
-/**
- * A callback function for LLEMU's center button.
- *
- * When this callback is fired, it will toggle line 2 of the LCD text between
- * "I was pressed!" and nothing.
- */
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
+
+//definitions
+pros::Serial serial(21, 512000);
+
+
+
+//telemetry task definition
+
+
+void telemetry_task(float m1Temp, float m2Temp, float m3Temp, float m4Temp, float m5Temp, float m6Temp, float m1Throttle, float m2Throttle, float m3Throttle, float m4Throttle, float m5Throttle, float m6Throttle, float xCoord, float yCoord, float heading) {
+	cJSON *root	 = cJSON_CreateObject();
+
+	cJSON *array = cJSON_CreateArray();
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m1Temp));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m2Temp));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m3Temp));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m4Temp));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m5Temp));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m6Temp));
+
+	cJSON_AddItemToObject(root, "motorTemperature", array);
+
+	array = cJSON_CreateArray();
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m1Throttle));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m2Throttle));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m3Throttle));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m4Throttle));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m5Throttle));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(m6Throttle));
+
+	cJSON_AddItemToObject(root, "motorThrottle", array);
+
+	array = cJSON_CreateArray();
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(xCoord));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(yCoord));
+	cJSON_AddItemToArray(array, cJSON_CreateNumber(heading));
+
+	cJSON_AddItemToObject(root, "pose", array);
+
+
+
+	char *json_string = cJSON_PrintUnformatted(root);
+
+	std::uint8_t *buffer =reinterpret_cast<std::uint8_t *>(json_string);
+	std::uint32_t length = std::strlen(json_string);
+
+	serial.write(buffer, length);
+	free(json_string);
+	cJSON_Delete(root);
 }
 
 /**
