@@ -2,6 +2,8 @@
 
 A modular system for advanced debugging, live telemetry, and autonomous tuning for VEX V5 robots. This project integrates a PROS-based control system with a Raspberry Pi for Bluetooth communication, camera-based vision tracking, and real-time data analysis.
 
+[KanBan Chart + Dev. Docs](https://www.notion.so/Doral-Telemetry-Features-Kanban-1fb83b8a79dd807db376e0dae9aa1ce0)
+
 # 🧠 Core Features
 
    - Real-time telemetry from the VEX brain via RS485 to Raspberry Pi
