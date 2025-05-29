@@ -15,3 +15,14 @@ A modular system for advanced debugging, live telemetry, and autonomous tuning f
   -  Autonomous tuning assistant to auto-adjust PID constants (e.g., KP, KI)
 
  -   Modular Git repo with split branches for VEX, Pi, and PC code
+
+ ---
+
+ # Credits
+
+ ## Acknowledgements
+ - This project uses **[Bumble](https://github.com/google/bumble)**, a Bluetooth host stack by Google LLC, licensed under the [Apache License 2.0](LICENSES/THIRD_PARTY/bumble/LICENSE).
+ - This project uses **[LemLib](https://github.com/LemLib/LemLib)**, a PROS template for Vex V5
+
+
+
