@@ -16,8 +16,6 @@ A modular system for advanced debugging, live telemetry, and autonomous tuning f
 
  -   Modular Git repo with split branches for VEX, Pi, and PC code
 
- ---
-
  # Credits
 
  ## Acknowledgements
