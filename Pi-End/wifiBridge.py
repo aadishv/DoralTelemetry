@@ -43,7 +43,7 @@ async def brain_reader():
 
 async def tcp_server():
     srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    srv=setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     srv.bind((HOST, PORT))
     srv.listen()
     srv.setblocking(False)

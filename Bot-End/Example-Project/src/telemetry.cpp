@@ -3,6 +3,35 @@
 
 //telemetry task definition
 
+void fakerLoop200Hz(void*) {
+    // seeded once so every reboot is different
+    std::mt19937 rng(pros::millis());         // engine
+
+    std::uniform_real_distribution<float> tempR(30.0f, 45.0f);   // °C
+    std::uniform_real_distribution<float> rpmR (0.0f, 600.0f);   // RPM
+    std::uniform_real_distribution<float> xyR  (0.0f, 144.0f);   // field in
+    std::uniform_real_distribution<float> thR  (0.0f, 360.0f);// deg
+
+    uint32_t next = pros::millis();           // for delay_until()
+
+    while (true) {
+        // generate six temps and six throttles
+        float temps[6], rpms[6];
+        for (int i = 0; i < 6; ++i) { temps[i] = tempR(rng); rpms[i] = rpmR(rng); }
+
+        float x  = xyR(rng);
+        float y  = xyR(rng);
+        float th = thR(rng);
+        float t  = pros::millis() * 0.001f;   // systemTime in seconds
+
+        telemetry_task(temps[0], temps[1], temps[2], temps[3], temps[4], temps[5],
+                       rpms [0], rpms [1], rpms [2], rpms [3], rpms [4], rpms [5],
+                       x, y, th, t);
+
+        pros::delay_until(&next, 5);          // keep 200 Hz cadence
+    }
+}
+
 
 void telemetry_task(float m1Temp, float m2Temp, float m3Temp, float m4Temp, float m5Temp, float m6Temp, float m1Throttle, float m2Throttle, float m3Throttle, float m4Throttle, float m5Throttle, float m6Throttle, float xCoord, float yCoord, float heading, float systemTime) {
 	cJSON *root	 = cJSON_CreateObject();
@@ -95,6 +124,7 @@ void controlLoop200Hz(void*) {
 static pros::Task* t200 = nullptr;
 void startTelemetryTask() {
     if (!t200) {
-        t200 = new pros::Task(controlLoop200Hz, nullptr, TASK_PRIORITY_DEFAULT +1, TASK_STACK_DEPTH_DEFAULT, "200Hz Telemetry");
+        //t200 = new pros::Task(controlLoop200Hz, nullptr, TASK_PRIORITY_DEFAULT +1, TASK_STACK_DEPTH_DEFAULT, "200Hz Telemetry"); real task
+        t200 = new pros::Task(telemetry_task, nullptr, TASK_PRIORITY_DEFAULT +1, TASK_STACK_DEPTH_DEFAULT, "200Hz Telemetry"); // fake task for testing
     }        
 }

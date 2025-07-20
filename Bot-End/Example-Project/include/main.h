@@ -44,6 +44,7 @@
 #include <cstring>
 #include "lemlib/api.hpp"
 #include "global.hpp"
+#include "random"
 
 /**
  * If you find doing pros::Motor() to be tedious and you'd prefer just to do
